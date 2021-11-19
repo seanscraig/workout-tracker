@@ -32,15 +32,6 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
 });
 
 router.get("/api/workouts", (req, res) => {
-  // Workout.find({})
-  //   .then((data) => {
-  //     data.forEach((workout) => {
-  //       let total = 0;
-  //       workout.exercises.forEach((exercise) => {
-  //         total += exercise.duration;
-  //       })
-  //       workout.totalDuration = total;
-  //     })
   Workout.aggregate([
     {
       $addFields: {
@@ -68,7 +59,6 @@ router.get("/api/workouts/range", (req, res) => {
       },
     },
   ])
-    // Workout.find({})
     .sort({ _id: -1 })
     .limit(7)
     .then((data) => {

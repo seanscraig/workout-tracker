@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
 const db = require('../models');
 
-// mongoose.connect("mongodb+srv://seancraig:yourpassword@cluster0.qakl4.mongodb.net/workoutdb?retryWrites=true&w=majority" || 'mongodb://localhost/workoutdb', {
-//   useNewUrlParser: true,
-//   useFindAndModify: false,
-//   useUnifiedTopology: true,
-// });
-
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutdb", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
