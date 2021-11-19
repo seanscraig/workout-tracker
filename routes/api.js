@@ -16,6 +16,7 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
     params.id,
     {
       $push: { exercises: body },
+      $inc: { totalDuration: body.duration}
     },
     {
       new: true,
@@ -31,16 +32,15 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
 });
 
 router.get("/api/workouts", (req, res) => {
-  Workout.aggregate([
-    {
-      $addFields: {
-        totalDuration: {
-          $sum: "$exercises.duration",
-        },
-      },
-    },
-  ])
+  Workout.find({})
     .then((data) => {
+      data.forEach((workout) => {
+        let total = 0;
+        workout.exercises.forEach((exercise) => {
+          total += exercise.duration;
+        })
+        workout.totalDuration = total;
+      })
       res.status(200).json(data);
     })
     .catch((err) => {
@@ -58,6 +58,7 @@ router.get("/api/workouts/range", (req, res) => {
       },
     },
   ])
+  // Workout.find({})
     .sort({ _id: -1 })
     .limit(7)
     .then((data) => {
@@ -68,14 +69,14 @@ router.get("/api/workouts/range", (req, res) => {
     });
 });
 
-router.delete("/api/workouts/:id", ({ body }, res) => {
-  Workout.findByIdAndDelete(body.id)
-  .then((data) => {
-    res.status(200).json(data);
-  })
-  .catch((err) => {
-    res.status(400).json(err);
-  });
-});
+// router.delete("/api/workouts/:id", ({ body }, res) => {
+//   Workout.findByIdAndDelete(body.id)
+//   .then((data) => {
+//     res.status(200).json(data);
+//   })
+//   .catch((err) => {
+//     res.status(400).json(err);
+//   });
+// });
 
 module.exports = router;
