@@ -20,7 +20,7 @@ router.put("/api/workouts/:id", ({ body, params }, res) => {
     },
     {
       new: true,
-      runValidatiors: true,
+      runValidators: true,
     }
   )
     .then((data) => {
